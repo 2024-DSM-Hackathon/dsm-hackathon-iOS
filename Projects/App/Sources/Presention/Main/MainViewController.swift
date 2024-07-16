@@ -5,7 +5,8 @@ import SnapKit
 import Then
 
 public class MainViewController: BaseViewController<MainViewModel> {
-//    let companyListViewController = CompanyListViewController(CompanyListViewModel())
+    let companyListViewController = CompanyListViewController(CompanyListViewModel())
+    let myPageViewController = MyPageViewController(MyPageViewModel())
 
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
@@ -150,6 +151,15 @@ public class MainViewController: BaseViewController<MainViewModel> {
 //                    self!.companyListViewController,
 //                    animated: true
 //                )
+            })
+            .disposed(by: disposeBag)
+
+        navigationBarProfileButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(
+                    self!.myPageViewController,
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
     }
