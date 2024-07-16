@@ -15,6 +15,9 @@ final class CompanyListTableViewCell: BaseTableViewCell<Any> {
         $0.text = "인프런"
         $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
+    private let arrowImageView = UIImageView().then {
+        $0.image = UIImage(named: "RightArrow")
+    }
     private let pointLabel = UILabel().then {
         $0.text = "★ 5.0"
     }
@@ -35,6 +38,7 @@ final class CompanyListTableViewCell: BaseTableViewCell<Any> {
         [
             companyImageView,
             companyTitleLabel,
+            arrowImageView,
             pointLabel,
             companyInfoLabel,
             serviceTypeMenuLabel,
@@ -54,6 +58,12 @@ final class CompanyListTableViewCell: BaseTableViewCell<Any> {
         companyTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(24)
             $0.leading.equalTo(companyImageView.snp.trailing).offset(20)
+        }
+
+        arrowImageView.snp.makeConstraints {
+            $0.height.width.equalTo(20)
+            $0.centerY.equalTo(companyTitleLabel)
+            $0.leading.equalTo(companyTitleLabel.snp.trailing)
         }
 
         pointLabel.snp.makeConstraints {

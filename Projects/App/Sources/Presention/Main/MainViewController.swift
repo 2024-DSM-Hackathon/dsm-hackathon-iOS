@@ -5,6 +5,8 @@ import SnapKit
 import Then
 
 public class MainViewController: BaseViewController<MainViewModel> {
+    let companyListViewController = CompanyListViewController(CompanyListViewModel())
+
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
     }
@@ -148,6 +150,15 @@ public class MainViewController: BaseViewController<MainViewModel> {
         newReviewTableView.delegate = self
         companyListTableView.dataSource = self
         newReviewTableView.dataSource = self
+
+        navigateToCompanyInfoAllButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(
+                    self!.companyListViewController,
+                    animated: true
+                )
+            })
+            .disposed(by: disposeBag)
     }
 
     public override func configureNavigation() {
@@ -161,7 +172,6 @@ public class MainViewController: BaseViewController<MainViewModel> {
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 3
         switch tableView {
         case companyListTableView:
             return 3
