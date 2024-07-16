@@ -49,9 +49,9 @@ final class NewReviewListTableViewCell: BaseTableViewCell<Any> {
 
     override func setLayout() {
         containerView.snp.makeConstraints {
-            $0.width.equalToSuperview()
+//            $0.width.equalToSuperview()
             $0.top.bottom.equalToSuperview().inset(6)
-            $0.leading.trailing.equalToSuperview().inset(24)
+            $0.leading.trailing.equalToSuperview()
         }
 
         reviewerInfoLabel.snp.makeConstraints {

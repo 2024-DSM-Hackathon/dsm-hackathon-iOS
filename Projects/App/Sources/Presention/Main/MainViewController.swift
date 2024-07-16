@@ -5,7 +5,7 @@ import SnapKit
 import Then
 
 public class MainViewController: BaseViewController<MainViewModel> {
-    let companyListViewController = CompanyListViewController(CompanyListViewModel())
+//    let companyListViewController = CompanyListViewController(CompanyListViewModel())
 
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
@@ -56,12 +56,10 @@ public class MainViewController: BaseViewController<MainViewModel> {
         $0.showsVerticalScrollIndicator = false
         $0.isScrollEnabled = false
     }
-    private let newReviewStackView = UIStackView()
-
+    
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
-        addView()
-        setLayout()
     }
 
     public override func addView() {
@@ -76,21 +74,21 @@ public class MainViewController: BaseViewController<MainViewModel> {
             newReviewTableView
         ].forEach { contentView.addSubview($0) }
     }
-
+    private let stackView = UIStackView().then {
+        $0.axis = .vertical
+    }
     public override func setLayout() {
         scrollView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.trailing/*.bottom*/.equalTo(self.view.safeAreaLayoutGuide)
-            $0.bottom.equalToSuperview()
-//            $0.width.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.width.equalToSuperview()
         }
 
         contentView.snp.makeConstraints {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
-            $0.bottom.equalTo(newReviewTableView.snp.bottom).offset(20)
+            $0.bottom.equalTo(newReviewTableView.snp.bottom).offset(30)
         }
-
         navigationBarLogoButton.snp.makeConstraints {
             $0.width.equalTo(50)
             $0.height.equalTo(60)
@@ -106,7 +104,7 @@ public class MainViewController: BaseViewController<MainViewModel> {
 
         bannerImageView.snp.makeConstraints {
             $0.height.equalTo(107)
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(11)
+            $0.top.equalToSuperview().inset(11)
             $0.leading.trailing.equalToSuperview().inset(24)
         }
 
@@ -133,13 +131,8 @@ public class MainViewController: BaseViewController<MainViewModel> {
 
         newReviewTableView.snp.makeConstraints {
             $0.top.equalTo(newReviewListLabel.snp.bottom).offset(8)
-            $0.leading.trailing.equalTo(view.safeAreaInsets)/*.inset(24)*/
+            $0.leading.trailing.equalToSuperview().inset(24)
             $0.height.greaterThanOrEqualTo(newReviewTableView.contentSize.height + 4)
-//            $0.bottom.equalToSuperview().inset(20)
-
-//            $0.height.equalTo(300)
-//            $0.leading.trailing.equalTo(view.safeAreaInsets)
-//            $0.height.greaterThanOrEqualTo(newReviewTableView.contentSize.height + 4)
         }
     }
 
@@ -153,10 +146,10 @@ public class MainViewController: BaseViewController<MainViewModel> {
 
         navigateToCompanyInfoAllButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                self?.navigationController?.pushViewController(
-                    self!.companyListViewController,
-                    animated: true
-                )
+//                self?.navigationController?.pushViewController(
+//                    self!.companyListViewController,
+//                    animated: true
+//                )
             })
             .disposed(by: disposeBag)
     }
