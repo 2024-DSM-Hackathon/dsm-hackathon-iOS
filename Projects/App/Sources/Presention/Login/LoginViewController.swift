@@ -171,14 +171,7 @@ final class LoginViewController: BaseViewController<LoginViewModel> {
     }
 
     public override func configureViewController() {
-//        loginButton.rx.tap.asObservable()
-//            .subscribe(onNext: {
-//                self.navigationController?.pushViewController(
-//                    self.mainViewController,
-//                    animated: true
-//                )
-//            })
-//            .disposed(by: disposeBag)
+
 
         goToSignupButton.rx.tap
             .subscribe(onNext: { [weak self] in

@@ -28,11 +28,17 @@ public final class LoginViewModel: BaseViewModel, Stepper {
             .withLatestFrom(info)
             .flatMap { id, password in
                 self.service.login(id: id, password: password)
-                    .andThen(Single.just(loginIsSuccess.accept(())))
             }
-            .subscribe()
+            .subscribe(onNext: { res in
+                switch res {
+                case .ok:
+                    loginIsSuccess.accept(())
+                default:
+                    print("로그인 실패")
+                }
+            })
             .disposed(by: disposeBag)
-            
+
         
         return Output(loginIsSuccess: loginIsSuccess.asObservable())
     }

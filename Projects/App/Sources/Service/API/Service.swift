@@ -7,15 +7,17 @@ final class Service {
 
     private let provider = MoyaProvider<WantAPI>(plugins: [MoyaLoggingPlugin()])
 
-    func login(id: String, password: String) -> Completable {
+    public func login(id: String, password: String) -> Single<Network> {
         return provider.rx.request(.login(id: id, password: password))
             .filterSuccessfulStatusCodes()
             .map(TokenDTO.self)
             .map { token in
                 TokenStorage.shared.accessToken = token.accessToken
+                return .ok
             }
-            .asCompletable()
+            .catch { _ in  return .just(.fail)}
     }
+
     func signup(name: String, id: String, password: String) -> Completable {
         return provider.rx.request(.signup(name: name, id: id, password: password))
             .filterSuccessfulStatusCodes()
@@ -49,4 +51,9 @@ final class Service {
             .filterSuccessfulStatusCodes()
             .map(NewReviewModel.self)
     }
+}
+
+enum Network: Int {
+    case ok = 200
+    case fail = 0
 }
