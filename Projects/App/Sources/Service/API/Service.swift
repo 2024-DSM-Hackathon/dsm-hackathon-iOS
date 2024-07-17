@@ -1,0 +1,52 @@
+import Foundation
+import Moya
+import RxSwift
+import RxMoya
+
+final class Service {
+
+    private let provider = MoyaProvider<WantAPI>(plugins: [MoyaLoggingPlugin()])
+
+    func login(id: String, password: String) -> Completable {
+        return provider.rx.request(.login(id: id, password: password))
+            .filterSuccessfulStatusCodes()
+            .map(TokenDTO.self)
+            .map { token in
+                TokenStorage.shared.accessToken = token.accessToken
+            }
+            .asCompletable()
+    }
+    func signup(name: String, id: String, password: String) -> Completable {
+        return provider.rx.request(.signup(name: name, id: id, password: password))
+            .filterSuccessfulStatusCodes()
+            .asCompletable()
+    }
+    func fetchCompanyDetail(id: Int) -> Single<CompanyModel> {
+        return provider.rx.request(.fetchCompanyDetail(id: id))
+            .filterSuccessfulStatusCodes()
+            .map(CompanyModel.self)
+    }
+    func fetchCompanyList() -> Single<CompanyListModel> {
+        return provider.rx.request(.fetchCompanyList)
+            .filterSuccessfulStatusCodes()
+            .map(CompanyListModel.self)
+    }
+    func fetchCompanyInfo() -> Single<CompanyInfoModel> {
+        return provider.rx.request(.fetchCompanyInfo)
+            .filterSuccessfulStatusCodes()
+            .map(CompanyInfoModel.self)
+    }
+//    func writeReview() -> Single<FetchCompanyModel> {
+//        return provider.rx.request(.)
+//    }
+    func fetchCompanyReview(id: Int) -> Single<FetchCompanyModel> {
+        return provider.rx.request(.fetchCompanyReview(id: id))
+            .filterSuccessfulStatusCodes()
+            .map(FetchCompanyModel.self)
+    }
+    func fetchNewReview() -> Single<NewReviewModel> {
+        return provider.rx.request(.fetchNewReview)
+            .filterSuccessfulStatusCodes()
+            .map(NewReviewModel.self)
+    }
+}

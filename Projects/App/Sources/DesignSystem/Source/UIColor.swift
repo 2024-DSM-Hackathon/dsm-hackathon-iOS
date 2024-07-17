@@ -9,4 +9,5 @@ public extension UIColor {
     static let color2EB15D: UIColor = UIColor(named: "2EB15D")!
     static let colorF4F4F4: UIColor = UIColor(named: "F4F4F4")!
     static let colorF5F5FD: UIColor = UIColor(named: "F5F5FD")!
+    static let colorBDBDBF: UIColor = UIColor(named: "BDBDBF")!
 }

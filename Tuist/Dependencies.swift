@@ -48,6 +48,10 @@ let depencies = Dependencies(
         .remote(
             url: "https://github.com/Juhwa-Lee1023/HangulSearch.git",
             requirement: .branch("main")
+        ),
+        .remote(
+            url: "https://github.com/evgenyneu/keychain-swift.git",
+            requirement: .upToNextMajor(from: "20.0.0")
         )
     ]),
     platforms: [.iOS]

@@ -16,5 +16,6 @@ extension TargetDependency {
 
         public static let Kingfisher = TargetDependency.external(name: "Kingfisher")
         public static let HangulSearch = TargetDependency.external(name: "HangulSearch")
+        public static let KeychainSwift = TargetDependency.external(name: "KeychainSwift")
     }
 }

@@ -7,7 +7,7 @@ import Then
 public class MainViewController: BaseViewController<MainViewModel> {
 //    let companyListViewController = CompanyListViewController(CompanyListViewModel())
 //    let myPageViewController = MyPageViewController(MyPageViewModel())
-    let searchViewController = SearchViewController(SearchViewModel())
+    let searchViewController = QuestionViewController(QuestionViewModel()) // 잠시 review로 바꿈
 
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
@@ -90,10 +90,6 @@ public class MainViewController: BaseViewController<MainViewModel> {
             $0.edges.equalTo(scrollView.contentLayoutGuide)
             $0.width.equalToSuperview()
             $0.bottom.equalTo(newReviewTableView.snp.bottom).offset(30)
-        }
-        navigationBarLogoButton.snp.makeConstraints {
-            $0.width.equalTo(50)
-            $0.height.equalTo(60)
         }
 
         navigationBarProfileButton.snp.makeConstraints {

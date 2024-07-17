@@ -13,7 +13,8 @@ let project = Project.makeTemp(
         .SPM.SnapKit,
         .SPM.Then,
         .SPM.Kingfisher,
-        .SPM.HangulSearch
+        .SPM.HangulSearch,
+        .SPM.KeychainSwift
 //        .SPM.Dropdown
 //        .SPM.Dropdown
     ]

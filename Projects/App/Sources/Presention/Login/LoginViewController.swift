@@ -152,13 +152,15 @@ final class LoginViewController: BaseViewController<LoginViewModel> {
     }
 
     public override func bind() {
-        let input = LoginViewModel.Input()
+        let input = LoginViewModel.Input(
+            idText: idTextField.rx.text.orEmpty.asObservable(),
+            passwordText: pwTextField.rx.text.orEmpty.asObservable(),
+            loginButtonTapped: loginButton.rx.tap.asObservable()
+            
+        )
 
-        let _ = viewModel.transform(input)
-    }
-
-    public override func configureViewController() {
-        loginButton.rx.tap.asObservable()
+        let output = viewModel.transform(input)
+        output.loginIsSuccess
             .subscribe(onNext: {
                 self.navigationController?.pushViewController(
                     self.mainViewController,
@@ -166,6 +168,17 @@ final class LoginViewController: BaseViewController<LoginViewModel> {
                 )
             })
             .disposed(by: disposeBag)
+    }
+
+    public override func configureViewController() {
+//        loginButton.rx.tap.asObservable()
+//            .subscribe(onNext: {
+//                self.navigationController?.pushViewController(
+//                    self.mainViewController,
+//                    animated: true
+//                )
+//            })
+//            .disposed(by: disposeBag)
 
         goToSignupButton.rx.tap
             .subscribe(onNext: { [weak self] in
