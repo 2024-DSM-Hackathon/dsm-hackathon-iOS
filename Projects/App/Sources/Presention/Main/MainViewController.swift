@@ -7,6 +7,7 @@ import Then
 public class MainViewController: BaseViewController<MainViewModel> {
 //    let companyListViewController = CompanyListViewController(CompanyListViewModel())
 //    let myPageViewController = MyPageViewController(MyPageViewModel())
+    let searchViewController = SearchViewController(SearchViewModel())
 
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
@@ -162,6 +163,14 @@ public class MainViewController: BaseViewController<MainViewModel> {
 //                )
 //            })
 //            .disposed(by: disposeBag)
+        navigationBarSearchButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(
+                    self!.searchViewController,
+                    animated: true
+                )
+            })
+            .disposed(by: disposeBag)
     }
 
     public override func configureNavigation() {
@@ -193,6 +202,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                 for: indexPath
             ) as? CompanyListTableViewCell else { return UITableViewCell() }
 
+            cell.selectionStyle = .none
+
             return cell
         case newReviewTableView:
             guard let cell = tableView.dequeueReusableCell(
@@ -200,10 +211,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                 for: indexPath
             ) as? NewReviewListTableViewCell else { return UITableViewCell() }
 
+            cell.selectionStyle = .none
+
             return cell
         default:
             return UITableViewCell()
-//            print("")
         }
     }
 }
