@@ -5,7 +5,6 @@ import SnapKit
 import Then
 
 public class CompanyListViewController: BaseViewController<CompanyListViewModel> {
-    
     private let colorView = UIView().then {
         $0.backgroundColor = UIColor.colorF4F4F4
     }
@@ -22,7 +21,6 @@ public class CompanyListViewController: BaseViewController<CompanyListViewModel>
         $0.separatorStyle = .none
         $0.rowHeight = 120
         $0.showsVerticalScrollIndicator = false
-        $0.isScrollEnabled = false
     }
 
     public override func viewDidLoad() {
@@ -57,29 +55,27 @@ public class CompanyListViewController: BaseViewController<CompanyListViewModel>
         }
     }
 
-    public override func bind() {}
+    public override func bind() {
+        let input = CompanyListViewModel.Input(
+            viewAppear: self.viewDidLoadPublisher
+        )
 
-    public override func configureViewController() {
-        companyListTableView.dataSource = self
-        companyListTableView.delegate = self
+        let output = viewModel.transform(input)
+
+        output.companyList
+            .bind(
+                to: companyListTableView.rx.items(
+                    cellIdentifier: CompanyListTableViewCell.identifier,
+                    cellType: CompanyListTableViewCell.self
+                )) { _, element, cell in
+                    cell.adapt(model: element)
+                }
+                .disposed(by: disposeBag)
     }
+
+    public override func configureViewController() { }
 
     public override func configureNavigation() {
         self.setSmallTitle(title: "기업 둘러보기")
-    }
-}
-
-extension CompanyListViewController: UITableViewDelegate, UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CompanyListTableViewCell.identifier,
-            for: indexPath
-        ) as? CompanyListTableViewCell else { return UITableViewCell() }
-        
-        return cell
     }
 }

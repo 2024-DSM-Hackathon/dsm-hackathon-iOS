@@ -1,14 +1,14 @@
 import Foundation
 
-struct CompanyListModel: Decodable {
-    let company_lists: [CompanyList]
-}
+//struct CompanyListModel: Decodable {
+//    let companyLists: [CompanyList]
+//}
 
 struct CompanyList: Decodable {
-    let company_id: Int
+    let companyId: Int
     let company: String
-    let rating: Int
+    let rating: Double
     let info: String
-    let industry_sector: String
+    let industrySector: String
     let logo: String
 }

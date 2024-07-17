@@ -28,10 +28,11 @@ final class Service {
             .filterSuccessfulStatusCodes()
             .map(CompanyModel.self)
     }
-    func fetchCompanyList() -> Single<CompanyListModel> {
+    func fetchCompanyList() -> Single<[CompanyList]> {
         return provider.rx.request(.fetchCompanyList)
             .filterSuccessfulStatusCodes()
-            .map(CompanyListModel.self)
+            .map(CompanyListResponseDTO.self)
+            .map { $0.toDomain() }
     }
     func fetchCompanyInfo() -> Single<CompanyInfoModel> {
         return provider.rx.request(.fetchCompanyInfo)

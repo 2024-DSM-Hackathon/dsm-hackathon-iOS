@@ -4,7 +4,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-final class CompanyListTableViewCell: BaseTableViewCell<Any> {
+final class CompanyListTableViewCell: BaseTableViewCell<CompanyList> {
     static let identifier = "CompanyListTableViewCell"
     private var disposeBag = DisposeBag()
     private let companyImageView = UIImageView().then {
@@ -89,5 +89,17 @@ final class CompanyListTableViewCell: BaseTableViewCell<Any> {
 
     override func configureView() {
 //        self.backgroundColor = .GrayScale.gray30
+    }
+
+    public override func adapt(model: CompanyList) {
+        self.model = model
+
+        companyImageView.setWantImage(
+            urlString: model.logo
+        )
+        companyTitleLabel.text = model.company
+        pointLabel.text = "★ \(model.rating)"
+        companyInfoLabel.text = model.info
+        serviceTypeLabel.text = model.industrySector
     }
 }

@@ -141,9 +141,21 @@ final class SignupViewController: BaseViewController<SignupViewModel> {
     }
 
     public override func bind() {
-        let input = SignupViewModel.Input()
+        let input = SignupViewModel.Input(
+            nameText: nameTextField.rx.text.orEmpty.asObservable(),
+            idText: idTextField.rx.text.orEmpty.asObservable(),
+            pwText: pwTextField.rx.text.orEmpty.asObservable(),
+            signupButtonDidTap: signupButton.rx.tap.asObservable()
+            
+        )
 
-        let _ = viewModel.transform(input)
+        let output = viewModel.transform(input)
+
+        output.signupIsSuccess // 예외처리 여쭈어보자
+            .subscribe(onNext: {
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 
     public override func configureViewController() {

@@ -5,7 +5,7 @@ import SnapKit
 import Then
 
 public class MainViewController: BaseViewController<MainViewModel> {
-//    let companyListViewController = CompanyListViewController(CompanyListViewModel())
+    let companyListViewController = CompanyListViewController(CompanyListViewModel())
 //    let myPageViewController = MyPageViewController(MyPageViewModel())
     let searchViewController = QuestionViewController(QuestionViewModel()) // 잠시 review로 바꿈
 
@@ -134,20 +134,34 @@ public class MainViewController: BaseViewController<MainViewModel> {
         }
     }
 
-    public override func bind() {}
+    public override func bind() {
+        let input = MainViewModel.Input(
+            viewAppear: self.viewDidLoadPublisher
+        )
+
+        let output = viewModel.transform(input)
+
+        output.companyList
+            .bind(
+                to: companyListTableView.rx.items(
+                    cellIdentifier: CompanyListTableViewCell.identifier,
+                    cellType: CompanyListTableViewCell.self
+                )) { _, element, cell in
+                    cell.adapt(model: element)
+                }
+                .disposed(by: disposeBag)
+    }
 
     public override func configureViewController() {
-        companyListTableView.delegate = self
         newReviewTableView.delegate = self
-        companyListTableView.dataSource = self
         newReviewTableView.dataSource = self
 
         navigateToCompanyInfoAllButton.rx.tap
             .subscribe(onNext: { [weak self] in
-//                self?.navigationController?.pushViewController(
-//                    self!.companyListViewController,
-//                    animated: true
-//                )
+                self?.navigationController?.pushViewController(
+                    self!.companyListViewController,
+                    animated: true
+                )
             })
             .disposed(by: disposeBag)
 
