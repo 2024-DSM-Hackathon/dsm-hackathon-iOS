@@ -14,7 +14,7 @@ class TotalReviewView: BaseView<Any> {
         $0.backgroundColor = .colorF5F5FD
         $0.layer.cornerRadius = 8
     }
-    private let reviewCountLabel = UILabel().then {
+    public let reviewCountLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 30, weight: .medium)
         $0.text = "5.0"
     }
@@ -35,7 +35,7 @@ class TotalReviewView: BaseView<Any> {
         $0.font = .systemFont(ofSize: 12, weight: .medium)
         $0.textAlignment = .right
     }
-    private let moneyProgressView = UIProgressView().then {
+    public let moneyProgressView = UIProgressView().then {
         $0.layer.cornerRadius = 3
     }
     private let workLifeLabel = UILabel().then {
@@ -43,20 +43,20 @@ class TotalReviewView: BaseView<Any> {
         $0.font = .systemFont(ofSize: 12, weight: .medium)
         $0.textAlignment = .right
     }
-    private let workProgressView = UIProgressView()
+    public let workProgressView = UIProgressView()
 
     private let cultureLabel = UILabel().then {
         $0.text = "직장문화"
         $0.font = .systemFont(ofSize: 12, weight: .medium)
     }
-    private let cultureProgressView = UIProgressView().then {
+    public let cultureProgressView = UIProgressView().then {
         $0.layer.cornerRadius = 3
     }
     private let workEnvLabel = UILabel().then {
         $0.text = "근무환경"
         $0.font = .systemFont(ofSize: 12, weight: .medium)
     }
-    private let workEnvProgressView = UIProgressView().then {
+    public let workEnvProgressView = UIProgressView().then {
         $0.layer.cornerRadius = 3
     }
     private lazy var titleStackView = UIStackView(arrangedSubviews: [

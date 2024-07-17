@@ -8,6 +8,8 @@ public class MainViewController: BaseViewController<MainViewModel> {
     let companyListViewController = CompanyListViewController(CompanyListViewModel())
 //    let myPageViewController = MyPageViewController(MyPageViewModel())
     let searchViewController = QuestionViewController(QuestionViewModel()) // 잠시 review로 바꿈
+    let vc = CompanyDetailViewController()
+    var companyId = 0
 
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = true
@@ -45,7 +47,7 @@ public class MainViewController: BaseViewController<MainViewModel> {
         $0.isScrollEnabled = false
     }
     private let newReviewListLabel = UILabel().then {
-        $0.text = "최신 리뷰 보러가기"
+        $0.text = "최신 리뷰"
         $0.font = UIFont.systemFont(ofSize: 18, weight: .bold)
     }
     private let newReviewTableView = UITableView().then {
@@ -62,6 +64,7 @@ public class MainViewController: BaseViewController<MainViewModel> {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+
     }
 
     public override func addView() {
@@ -130,13 +133,14 @@ public class MainViewController: BaseViewController<MainViewModel> {
         newReviewTableView.snp.makeConstraints {
             $0.top.equalTo(newReviewListLabel.snp.bottom).offset(8)
             $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.greaterThanOrEqualTo(newReviewTableView.contentSize.height + 4)
+//            $0.height.greaterThanOrEqualTo(newReviewTableView.contentSize.height + 4)
+            $0.height.equalTo(800)
         }
     }
 
     public override func bind() {
         let input = MainViewModel.Input(
-            viewAppear: self.viewDidLoadPublisher
+            viewAppear: self.viewWillAppearPublisher
         )
 
         let output = viewModel.transform(input)
@@ -150,12 +154,31 @@ public class MainViewController: BaseViewController<MainViewModel> {
                     cell.adapt(model: element)
                 }
                 .disposed(by: disposeBag)
+        companyListTableView.rx.itemSelected
+            .map { index -> Int in
+                guard let cell = self.companyListTableView.cellForRow(at: index) as? CompanyListTableViewCell else { return 0 }
+                return cell.companyId
+            }
+            .subscribe(onNext: { companyId in
+                self.vc.companyId = companyId
+                self.navigationController?.pushViewController(self.vc, animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        output.newReviewList
+            .bind(
+                to: newReviewTableView.rx.items(
+                    cellIdentifier: NewReviewListTableViewCell.identifier,
+                    cellType: NewReviewListTableViewCell.self
+                )) { _, element, cell in
+                    cell.adapt(model: element)
+                }
+                .disposed(by: disposeBag)
+//        newReviewTableView.rx.itemSelected
+
     }
 
     public override func configureViewController() {
-        newReviewTableView.delegate = self
-        newReviewTableView.dataSource = self
-
         navigateToCompanyInfoAllButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.navigationController?.pushViewController(
@@ -189,43 +212,5 @@ public class MainViewController: BaseViewController<MainViewModel> {
             UIBarButtonItem(customView: navigationBarProfileButton),
             UIBarButtonItem(customView: navigationBarSearchButton)
         ]
-    }
-}
-
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch tableView {
-        case companyListTableView:
-            return 3
-        case newReviewTableView:
-            return 2
-        default:
-            return 0
-        }
-    }
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch tableView {
-        case companyListTableView:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: CompanyListTableViewCell.identifier,
-                for: indexPath
-            ) as? CompanyListTableViewCell else { return UITableViewCell() }
-
-            cell.selectionStyle = .none
-
-            return cell
-        case newReviewTableView:
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: NewReviewListTableViewCell.identifier,
-                for: indexPath
-            ) as? NewReviewListTableViewCell else { return UITableViewCell() }
-
-            cell.selectionStyle = .none
-
-            return cell
-        default:
-            return UITableViewCell()
-        }
     }
 }

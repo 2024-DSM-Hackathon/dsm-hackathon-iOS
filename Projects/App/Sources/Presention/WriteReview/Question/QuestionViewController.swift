@@ -4,8 +4,17 @@ import RxSwift
 import SnapKit
 import Then
 
+struct answerListInfo {
+    let questionId: Int
+    let answer: String
+    let rating: Double
+}
+
 public class QuestionViewController: BaseViewController<QuestionViewModel> {
     let reviewViewController = ReviewViewController(ReviewViewModel())
+    public var typeText: String = ""
+    public var annualText: String = ""
+    public var statusText: String = ""
 
     private let scrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -92,6 +101,9 @@ public class QuestionViewController: BaseViewController<QuestionViewModel> {
         super.viewDidLoad()
         addView()
         setLayout()
+        print(typeText)
+        print(annualText)
+        print(statusText)
     }
 
     public override func addView() {

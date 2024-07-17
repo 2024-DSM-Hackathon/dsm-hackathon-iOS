@@ -4,7 +4,7 @@ import Foundation
 //    let companyLists: [CompanyList]
 //}
 
-struct CompanyList: Decodable {
+struct CompanyList {
     let companyId: Int
     let company: String
     let rating: Double

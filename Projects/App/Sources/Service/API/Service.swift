@@ -26,7 +26,8 @@ final class Service {
     func fetchCompanyDetail(id: Int) -> Single<CompanyModel> {
         return provider.rx.request(.fetchCompanyDetail(id: id))
             .filterSuccessfulStatusCodes()
-            .map(CompanyModel.self)
+            .map(CompanyDetailResponseDTO.self)
+            .map { $0.toDomain() }
     }
     func fetchCompanyList() -> Single<[CompanyList]> {
         return provider.rx.request(.fetchCompanyList)
@@ -42,15 +43,17 @@ final class Service {
 //    func writeReview() -> Single<FetchCompanyModel> {
 //        return provider.rx.request(.)
 //    }
-    func fetchCompanyReview(id: Int) -> Single<FetchCompanyModel> {
+    func fetchCompanyReview(id: Int) -> Single<[AnswerList]> {
         return provider.rx.request(.fetchCompanyReview(id: id))
             .filterSuccessfulStatusCodes()
-            .map(FetchCompanyModel.self)
+            .map(CompanyReviewListResponseDTO.self)
+            .map { $0.toDomain() }
     }
-    func fetchNewReview() -> Single<NewReviewModel> {
+    func fetchNewReview() -> Single<[NewReviewList]> {
         return provider.rx.request(.fetchNewReview)
             .filterSuccessfulStatusCodes()
-            .map(NewReviewModel.self)
+            .map(NewReviewListResponseDTO.self)
+            .map { $0.toDomain() }
     }
 }
 

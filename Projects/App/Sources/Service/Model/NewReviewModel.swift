@@ -1,15 +1,15 @@
 import Foundation
 
-struct NewReviewModel: Decodable {
-    let answer_list: [NewReviewList]
-}
+//struct NewReviewModel: Decodable {
+//    let answer_list: [NewReviewList]
+//}
 
-struct NewReviewList: Decodable {
-    let user_name: String
+struct NewReviewList {
+    let userName: String
     let company: String
     let annual: Int
     let status: String
     let answer: String
-    let rating: Int
+    let rating: Double
     let date: String
 }

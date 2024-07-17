@@ -6,5 +6,6 @@ struct CompanyInfoModel: Decodable {
     let industry_sector: String
     let logo: String
     let company_rating: Int
-    let rating_list: [RateList]
+    let ratingList: [RateList]
+    
 }

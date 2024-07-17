@@ -4,20 +4,20 @@ import Then
 
 class CompanyView: BaseView<Any> {
 
-    private let logoImageView = UIImageView().then {
+    public let logoImageView = UIImageView().then {
         $0.layer.cornerRadius = 8
         $0.backgroundColor = .blue
     }
-    private let companyLabel = UILabel().then {
+    public let companyLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .bold)
         $0.text = "asda"
     }
-    private let companyDescriptionLabel = UILabel().then {
+    public let companyDescriptionLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 12, weight: .medium)
         $0.textColor = .gray
         $0.text = "asda"
     }
-    private let categoryLabel = UILabel().then {
+    public let categoryLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 12, weight: .medium)
         $0.text = "asda"
     }

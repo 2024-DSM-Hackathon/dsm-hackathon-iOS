@@ -7,6 +7,8 @@ import RxCocoa
 final class CompanyListTableViewCell: BaseTableViewCell<CompanyList> {
     static let identifier = "CompanyListTableViewCell"
     private var disposeBag = DisposeBag()
+    var companyId: Int = 0
+
     private let companyImageView = UIImageView().then {
         $0.backgroundColor = .black
         $0.layer.cornerRadius = 8
@@ -87,9 +89,7 @@ final class CompanyListTableViewCell: BaseTableViewCell<CompanyList> {
         }
     }
 
-    override func configureView() {
-//        self.backgroundColor = .GrayScale.gray30
-    }
+    override func configureView() { }
 
     public override func adapt(model: CompanyList) {
         self.model = model
@@ -97,6 +97,7 @@ final class CompanyListTableViewCell: BaseTableViewCell<CompanyList> {
         companyImageView.setWantImage(
             urlString: model.logo
         )
+        companyId = model.companyId
         companyTitleLabel.text = model.company
         pointLabel.text = "★ \(model.rating)"
         companyInfoLabel.text = model.info

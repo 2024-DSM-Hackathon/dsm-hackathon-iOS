@@ -14,10 +14,12 @@ public final class MainViewModel: BaseViewModel, Stepper {
 
     public struct Output {
         var companyList = PublishRelay<[CompanyList]>()
+        var newReviewList = PublishRelay<[NewReviewList]>()
     }
 
     public func transform(_ input: Input) -> Output {
         let companyList = PublishRelay<[CompanyList]>()
+        let newReviewList = PublishRelay<[NewReviewList]>()
 
         input.viewAppear.asObservable()
             .flatMap {
@@ -26,6 +28,16 @@ public final class MainViewModel: BaseViewModel, Stepper {
             .bind(to: companyList)
             .disposed(by: disposeBag)
 
-        return Output(companyList: companyList)
+        input.viewAppear.asObservable()
+            .flatMap {
+                self.service.fetchNewReview()
+            }
+            .bind(to: newReviewList)
+            .disposed(by: disposeBag)
+
+        return Output(
+            companyList: companyList,
+            newReviewList: newReviewList
+        )
     }
 }
