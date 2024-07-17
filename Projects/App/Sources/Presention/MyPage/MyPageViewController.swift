@@ -5,6 +5,10 @@ import SnapKit
 import Then
 
 public class MyPageViewController: BaseViewController<MyPageViewModel> {
+    private let scrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
+    }
+    private let contentView = UIView()
     private let userNameLabel = UILabel().then {
         $0.text = "limda00님"
         $0.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
@@ -20,21 +24,24 @@ public class MyPageViewController: BaseViewController<MyPageViewModel> {
         $0.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         $0.textColor = .black
     }
-//    private let writtenReviewTableView = UITableView().then {
-//        $0.register(
-//            NewReviewListTableViewCell.self,
-//            forCellReuseIdentifier: NewReviewListTableViewCell.identifier
-//        )
-//        $0.separatorStyle = .none
-//        $0.rowHeight = 161
-//        $0.showsVerticalScrollIndicator = false
-//        $0.isScrollEnabled = false
-//    }
+    private let writtenReviewTableView = UITableView().then {
+        $0.register(
+            NewReviewListTableViewCell.self,
+            forCellReuseIdentifier: NewReviewListTableViewCell.identifier
+        )
+        $0.separatorStyle = .none
+        $0.rowHeight = 161
+        $0.showsVerticalScrollIndicator = false
+        $0.isScrollEnabled = false
+    }
     private let logoutButton = UIButton().then {
         $0.setTitle("로그아웃", for: .normal)
         $0.backgroundColor = .colorF4F4F4
         $0.setTitleColor(.color838383, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        $0.layer.cornerRadius = 8
+        $0.contentHorizontalAlignment = .left
+        $0.contentEdgeInsets = UIEdgeInsets(top: 15, left: 24, bottom: 15, right: 0)
     }
 
     public override func viewDidLoad() {
@@ -44,18 +51,32 @@ public class MyPageViewController: BaseViewController<MyPageViewModel> {
     }
 
     public override func addView() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
         [
             userNameLabel,
             userInfoLabel,
             writtenReviewLabel,
-//            writtenReviewTableView,
+            writtenReviewTableView,
             logoutButton
-        ].forEach { self.view.addSubview($0) }
+        ].forEach { contentView.addSubview($0) }
     }
 
     public override func setLayout() {
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide)
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalToSuperview()
+            $0.bottom.equalTo(logoutButton.snp.bottom).offset(30)
+        }
+
         userNameLabel.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).inset(20)
+            $0.top.equalToSuperview().inset(20)
             $0.leading.equalToSuperview().inset(24)
         }
 
@@ -69,14 +90,15 @@ public class MyPageViewController: BaseViewController<MyPageViewModel> {
             $0.leading.equalToSuperview().inset(24)
         }
 
-//        writtenReviewTableView.snp.makeConstraints {
-//            $0.top.equalTo(writtenReviewLabel.snp.bottom).offset(6)
-//            $0.leading.trailing.equalToSuperview()
-//        }
+        writtenReviewTableView.snp.makeConstraints {
+            $0.top.equalTo(writtenReviewLabel.snp.bottom).offset(6)
+            $0.leading.trailing.equalToSuperview().inset(24)
+            $0.height.greaterThanOrEqualTo(writtenReviewTableView.contentSize.height + 4)
+        }
 
         logoutButton.snp.makeConstraints {
             $0.height.equalTo(50)
-            $0.top.equalTo(writtenReviewLabel.snp.bottom).offset(20)
+            $0.top.equalTo(writtenReviewTableView.snp.bottom).offset(20)
             $0.leading.trailing.equalToSuperview().inset(24)
         }
     }
@@ -85,8 +107,8 @@ public class MyPageViewController: BaseViewController<MyPageViewModel> {
 
     public override func configureViewController() {
         self.setSmallTitle(title: "마이페이지")
-//        writtenReviewTableView.delegate = self
-//        writtenReviewTableView.dataSource = self
+        writtenReviewTableView.delegate = self
+        writtenReviewTableView.dataSource = self
     }
 
     public override func configureNavigation() {
@@ -94,17 +116,19 @@ public class MyPageViewController: BaseViewController<MyPageViewModel> {
     }
 }
 
-//extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
-//    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 3
-//    }
-//    
-//    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let cell = tableView.dequeueReusableCell(
-//            withIdentifier: NewReviewListTableViewCell.identifier,
-//            for: indexPath
-//        ) as? NewReviewListTableViewCell else { return UITableViewCell() }
-//
-//        return cell
-//    }
-//}
+extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 7
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: NewReviewListTableViewCell.identifier,
+            for: indexPath
+        ) as? NewReviewListTableViewCell else { return UITableViewCell() }
+
+        cell.selectionStyle = .none
+
+        return cell
+    }
+}
