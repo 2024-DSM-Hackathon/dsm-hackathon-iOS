@@ -8,4 +8,5 @@ public extension UIColor {
     static let color838383: UIColor = UIColor(named: "838383")!
     static let color2EB15D: UIColor = UIColor(named: "2EB15D")!
     static let colorF4F4F4: UIColor = UIColor(named: "F4F4F4")!
+    static let colorF5F5FD: UIColor = UIColor(named: "F5F5FD")!
 }

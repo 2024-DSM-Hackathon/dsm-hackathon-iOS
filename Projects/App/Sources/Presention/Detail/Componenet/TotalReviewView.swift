@@ -11,7 +11,7 @@ class TotalReviewView: BaseView<Any> {
         $0.font = .systemFont(ofSize: 14, weight: .semibold)
     }
     private let reviewBackgroundView = UIView().then {
-        $0.backgroundColor = .gray
+        $0.backgroundColor = .colorF5F5FD
         $0.layer.cornerRadius = 8
     }
     private let reviewCountLabel = UILabel().then {
