@@ -86,7 +86,7 @@ final class NewReviewListTableViewCell: BaseTableViewCell<NewReviewList> {
     public override func adapt(model: NewReviewList) {
         self.model = model
         
-        reviewerInfoLabel.text = "| \(model.annual) |"
+        reviewerInfoLabel.text = "\(model.company) | \(model.annual)년 | \(model.status)"
         reviewContentLabel.text = model.answer
         pointLabel.text = "\(model.rating)"
         reviewDateLabel.text = "\(model.date.toWantDate())"

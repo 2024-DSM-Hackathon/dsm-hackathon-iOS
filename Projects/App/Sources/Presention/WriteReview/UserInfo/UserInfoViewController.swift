@@ -56,10 +56,6 @@ public class UserInfoViewController: BaseViewController<UserInfoViewModel> {
 //        
 //    }
 
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
 
     public override func addView() {
         [
@@ -131,7 +127,7 @@ public class UserInfoViewController: BaseViewController<UserInfoViewModel> {
             viewAppear: self.viewWillAppearPublisher
         )
 
-        let output = viewModel.transform(input)
+        let _ = viewModel.transform(input)
     }
 
     public override func configureViewController() {
@@ -146,6 +142,9 @@ public class UserInfoViewController: BaseViewController<UserInfoViewModel> {
     }
 
     public override func configureNavigation() {
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        backBarButtonItem.tintColor = .black
+        self.navigationItem.backBarButtonItem = backBarButtonItem
         self.setSmallTitle(title: "리뷰 작성")
     }
 }

@@ -19,7 +19,7 @@ enum WantAPI {
 
 extension WantAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://192.168.0.40:8080")!
+        return URL(string: "http://192.168.0.61:8080")!
     }
     
     var path: String {

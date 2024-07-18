@@ -6,7 +6,7 @@ class CompanyView: BaseView<Any> {
 
     public let logoImageView = UIImageView().then {
         $0.layer.cornerRadius = 8
-        $0.backgroundColor = .blue
+        $0.image = UIImage(named: "InLogo")
     }
     public let companyLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .bold)

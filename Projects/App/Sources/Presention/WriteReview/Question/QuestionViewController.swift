@@ -7,11 +7,11 @@ import Then
 struct answerListInfo {
     let questionId: Int
     let answer: String
-    let rating: Double
+    let rating: Int
 }
 
 public class QuestionViewController: BaseViewController<QuestionViewModel> {
-    let reviewViewController = ReviewViewController(ReviewViewModel())
+    var reviewViewController = ReviewViewController(ReviewViewModel())
     public var typeText: String = ""
     public var annualText: String = ""
     public var statusText: String = ""
@@ -229,6 +229,31 @@ public class QuestionViewController: BaseViewController<QuestionViewModel> {
         self.setSmallTitle(title: "리뷰 작성")
         nextButton.rx.tap
             .subscribe(onNext: { [weak self] in
+//                let answerInfoList: [answerListInfo] = []
+                self?.reviewViewController.typeText = self?.typeText ?? ""
+                self?.reviewViewController.annualText = self?.annualText ?? ""
+                self?.reviewViewController.statusText = self?.statusText ?? ""
+
+//                self?.reviewViewController.answerInfoList.append(answerListInfo(
+//                    questionId: 1,
+//                    answer: self?.rewardPointTextView.textView.text ?? "",
+//                    rating: 4
+//                ))
+//                self?.reviewViewController.answerListInfo.append(answerListInfo(
+//                    questionId: 2,
+//                    answer: self?.rulePointTextView.textView.text ?? "",
+//                    rating: 3
+//                ))
+//                self?.reviewViewController.answerListInfo.append(answerListInfo(
+//                    questionId: 3,
+//                    answer: self?.workPlacePointTextView.textView.text ?? "",
+//                    rating: 2
+//                ))
+//                self?.reviewViewController.answerListInfo.append(answerListInfo(
+//                    questionId: 4,
+//                    answer: self?.companyCulturePointTextView.textView.text ?? "",
+//                    rating: 5
+//                ))
                 self?.navigationController?.pushViewController(
                     self!.reviewViewController,
                     animated: true

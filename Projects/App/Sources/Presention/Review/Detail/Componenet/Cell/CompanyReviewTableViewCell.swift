@@ -4,7 +4,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-final class CompanyReviewTableViewCell: BaseTableViewCell<[AnswerList]> {
+final class CompanyReviewTableViewCell: BaseTableViewCell<AnswerList> {
     static let identifier = "CompanyReviewTableViewCell"
     private var disposeBag = DisposeBag()
     var cellId: Int = 0
@@ -83,14 +83,12 @@ final class CompanyReviewTableViewCell: BaseTableViewCell<[AnswerList]> {
 
     override func configureView() { }
 
-    public override func adapt(model: [AnswerList]) {
+    public override func adapt(model: AnswerList) {
         self.model = model
 
-        
-//        model[0]
-//        reviewerInfoLabel.text = "\(model.) | \(model.annual) | \(model.userName)"
-//        reviewContentLabel.text = model.answer
-//        pointLabel.text = "\(model.rating)"
-//        reviewDateLabel.text = "\(model.date.toWantDate())"
+        reviewerInfoLabel.text = "\(model.sector)  | \(model.annual) | \(model.question)"
+        reviewContentLabel.text = model.answer
+        pointLabel.text = "\(model.rating)"
+        reviewDateLabel.text = "\(model.date.toWantDate())"
     }
 }

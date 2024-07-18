@@ -20,8 +20,8 @@ class CompanyDetailViewController: UIViewController {
     }
     private let reviewTableview = UITableView().then {
         $0.register(
-            NewReviewListTableViewCell.self,
-            forCellReuseIdentifier: NewReviewListTableViewCell.identifier
+            CompanyReviewTableViewCell.self,
+            forCellReuseIdentifier: CompanyReviewTableViewCell.identifier
         )
         $0.separatorStyle = .none
         $0.rowHeight = 161
@@ -42,7 +42,7 @@ class CompanyDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         companyDetailViewModel.companyId = self.companyId
-//        bind()
+        bind()
 
         goToWriteButton.rx.tap.asObservable()
             .subscribe(onNext: {
@@ -111,41 +111,41 @@ class CompanyDetailViewController: UIViewController {
         reviewTableview.snp.makeConstraints {
             $0.top.equalTo(reviewTitleLabel.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.greaterThanOrEqualTo(reviewTableview.contentSize.height + 4)
+            $0.height.equalTo(1800)
+//            $0.height.greaterThanOrEqualTo(reviewTableview.contentSize.height + 4)
         }
     }
 
-//    public func bind() {
-//        let input = CompanyDetailViewModel.Input(
-//            viewAppear: self.viewWillAppearPublisher
-//        )
-//
-//        let output = self.companyDetailViewModel.transform(input)
-//
-//        output.companyDetailInfo
-//            .bind(onNext: { item in
-//                self.companyView.companyLabel.text = item.company
-//                self.companyView.companyDescriptionLabel.text = item.info
-//                self.companyView.categoryLabel.text = item.industry_sector
-//                self.totalReviewView.reviewCountLabel.text = "\(item.company_rating)"
-//                self.totalReviewView.moneyProgressView.setProgress(Float(item.ratingList[0].rate/5), animated: true)
-//                self.totalReviewView.workProgressView.setProgress(Float(item.ratingList[1].rate/5), animated: true)
-//                self.totalReviewView.cultureProgressView.setProgress(Float(item.ratingList[2].rate/5), animated: true)
-//                self.totalReviewView.workEnvProgressView.setProgress(Float(item.ratingList[3].rate/5), animated: true)
-//            })
-//            .disposed(by: disposeBag)
+    public func bind() {
+        let input = CompanyDetailViewModel.Input(
+            viewAppear: self.viewWillAppearPublisher
+        )
 
-//        output.companyReviewInfo
-//            .bind(
-//                to: reviewTableview.rx.items(
-//                    cellIdentifier: CompanyReviewTableViewCell.identifier,
-//                    cellType: CompanyReviewTableViewCell.self
-//                )) { _, element, cell in
-//                    cell.adapt(model: element)
-//                    cell.adapt(company: companyView.companyLabel)
-//                }
-//                .disposed(by: disposeBag)
-//    }
+        let output = self.companyDetailViewModel.transform(input)
+
+        output.companyDetailInfo
+            .bind(onNext: { item in
+                self.companyView.companyLabel.text = item.company
+                self.companyView.companyDescriptionLabel.text = item.info
+                self.companyView.categoryLabel.text = item.industry_sector
+                self.totalReviewView.reviewCountLabel.text = "\(item.company_rating)"
+                self.totalReviewView.moneyProgressView.setProgress(Float(item.ratingList[0].rate/5), animated: true)
+                self.totalReviewView.workProgressView.setProgress(Float(item.ratingList[1].rate/5), animated: true)
+                self.totalReviewView.cultureProgressView.setProgress(Float(item.ratingList[2].rate/5), animated: true)
+                self.totalReviewView.workEnvProgressView.setProgress(Float(item.ratingList[3].rate/5), animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        output.companyReviewInfo
+            .bind(
+                to: reviewTableview.rx.items(
+                    cellIdentifier: CompanyReviewTableViewCell.identifier,
+                    cellType: CompanyReviewTableViewCell.self
+                )) { _ , element, cell in
+                    cell.adapt(model: element)
+                }
+                .disposed(by: disposeBag)
+    }
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

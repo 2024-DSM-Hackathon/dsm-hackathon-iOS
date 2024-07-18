@@ -6,8 +6,8 @@ import Then
 
 public class MainViewController: BaseViewController<MainViewModel> {
     let companyListViewController = CompanyListViewController(CompanyListViewModel())
-//    let myPageViewController = MyPageViewController(MyPageViewModel())
-    let searchViewController = QuestionViewController(QuestionViewModel()) // 잠시 review로 바꿈
+    let myPageViewController = MyPageViewController(MyPageViewModel())
+    let searchViewController = SearchViewController(SearchViewModel())
     let vc = CompanyDetailViewController()
     var companyId = 0
 
@@ -16,7 +16,7 @@ public class MainViewController: BaseViewController<MainViewModel> {
     }
     private let contentView = UIView()
     private let navigationBarLogoButton = UIButton().then {
-        $0.setImage(UIImage(named: "Logo"), for: .normal)
+        $0.setImage(UIImage(named: "NormalLogo"), for: .normal)
     }
     private let navigationBarSearchButton = UIButton().then {
         $0.setImage(UIImage(named: "Search"), for: .normal)
@@ -154,6 +154,7 @@ public class MainViewController: BaseViewController<MainViewModel> {
                     cell.adapt(model: element)
                 }
                 .disposed(by: disposeBag)
+
         companyListTableView.rx.itemSelected
             .map { index -> Int in
                 guard let cell = self.companyListTableView.cellForRow(at: index) as? CompanyListTableViewCell else { return 0 }
@@ -188,14 +189,15 @@ public class MainViewController: BaseViewController<MainViewModel> {
             })
             .disposed(by: disposeBag)
 
-//        navigationBarProfileButton.rx.tap
-//            .subscribe(onNext: { [weak self] in
-//                self?.navigationController?.pushViewController(
-//                    self!.myPageViewController,
-//                    animated: true
-//                )
-//            })
-//            .disposed(by: disposeBag)
+        navigationBarProfileButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.navigationController?.pushViewController(
+                    self!.myPageViewController,
+                    animated: true
+                )
+            })
+            .disposed(by: disposeBag)
+
         navigationBarSearchButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.navigationController?.pushViewController(

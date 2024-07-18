@@ -93,7 +93,8 @@ public class MyPageViewController: BaseViewController<MyPageViewModel> {
         writtenReviewTableView.snp.makeConstraints {
             $0.top.equalTo(writtenReviewLabel.snp.bottom).offset(6)
             $0.leading.trailing.equalToSuperview().inset(24)
-            $0.height.greaterThanOrEqualTo(writtenReviewTableView.contentSize.height + 4)
+            $0.height.equalTo(500)
+//            $0.height.greaterThanOrEqualTo(writtenReviewTableView.contentSize.height + 4)
         }
 
         logoutButton.snp.makeConstraints {
@@ -103,32 +104,30 @@ public class MyPageViewController: BaseViewController<MyPageViewModel> {
         }
     }
 
-    public override func bind() {}
+    public override func bind() {
+        print("bind임")
+        let input = MyPageViewModel.Input(
+            viewAppear: self.viewWillAppearPublisher
+        )
+        
+        let output = viewModel.transform(input)
+        
+        output.newReviewList
+            .bind(
+                to: writtenReviewTableView.rx.items(
+                    cellIdentifier: NewReviewListTableViewCell.identifier,
+                    cellType: NewReviewListTableViewCell.self
+                )) { _, element, cell in
+                    cell.adapt(model: element)
+                }
+                .disposed(by: disposeBag)
+    }
 
     public override func configureViewController() {
         self.setSmallTitle(title: "마이페이지")
-        writtenReviewTableView.delegate = self
-        writtenReviewTableView.dataSource = self
     }
 
     public override func configureNavigation() {
         
-    }
-}
-
-extension MyPageViewController: UITableViewDelegate, UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
-    }
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: NewReviewListTableViewCell.identifier,
-            for: indexPath
-        ) as? NewReviewListTableViewCell else { return UITableViewCell() }
-
-        cell.selectionStyle = .none
-
-        return cell
     }
 }

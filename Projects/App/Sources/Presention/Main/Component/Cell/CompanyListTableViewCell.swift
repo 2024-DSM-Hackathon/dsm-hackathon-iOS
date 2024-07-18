@@ -10,7 +10,8 @@ final class CompanyListTableViewCell: BaseTableViewCell<CompanyList> {
     var companyId: Int = 0
 
     private let companyImageView = UIImageView().then {
-        $0.backgroundColor = .black
+//        $0.backgroundColor = .black
+        $0.image = UIImage(named: "InLogo")
         $0.layer.cornerRadius = 8
     }
     private let companyTitleLabel = UILabel().then {
@@ -94,9 +95,9 @@ final class CompanyListTableViewCell: BaseTableViewCell<CompanyList> {
     public override func adapt(model: CompanyList) {
         self.model = model
 
-        companyImageView.setWantImage(
-            urlString: model.logo
-        )
+//        companyImageView.setWantImage(
+//            urlString: model.logo
+//        )
         companyId = model.companyId
         companyTitleLabel.text = model.company
         pointLabel.text = "★ \(model.rating)"

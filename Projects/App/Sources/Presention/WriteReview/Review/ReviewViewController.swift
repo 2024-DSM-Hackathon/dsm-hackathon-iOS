@@ -5,6 +5,11 @@ import SnapKit
 import Then
 
 public class ReviewViewController: BaseViewController<ReviewViewModel> {
+    let answerInfoList = answerListInfo.self
+    public var typeText: String = ""
+    public var annualText: String = ""
+    public var statusText: String = ""
+
     private let reviewTitleLabel = UILabel().then {
         $0.text = "리뷰를 작성해주세요"
         $0.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
@@ -69,6 +74,18 @@ public class ReviewViewController: BaseViewController<ReviewViewModel> {
     public override func bind() {}
 
     public override func configureViewController() {
+        nextButton.rx.tap
+            .subscribe(onNext: {
+                if let viewControllers = self.navigationController?.viewControllers {
+                    for viewController in viewControllers {
+                        if viewController is CompanyDetailViewController {
+                            self.navigationController?.popToViewController(viewController, animated: true)
+                            break
+                        }
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
         self.setSmallTitle(title: "리뷰 작성")
     }
 
