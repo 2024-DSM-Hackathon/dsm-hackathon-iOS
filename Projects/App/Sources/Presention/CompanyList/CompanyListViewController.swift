@@ -5,6 +5,8 @@ import SnapKit
 import Then
 
 public class CompanyListViewController: BaseViewController<CompanyListViewModel> {
+    let vc = CompanyDetailViewController()
+
     private let colorView = UIView().then {
         $0.backgroundColor = UIColor.colorF4F4F4
     }
@@ -71,6 +73,17 @@ public class CompanyListViewController: BaseViewController<CompanyListViewModel>
                     cell.adapt(model: element)
                 }
                 .disposed(by: disposeBag)
+
+        companyListTableView.rx.itemSelected
+            .map { index -> Int in
+                guard let cell = self.companyListTableView.cellForRow(at: index) as? CompanyListTableViewCell else { return 0 }
+                return cell.companyId
+            }
+            .subscribe(onNext: { companyId in
+                self.vc.companyId = companyId
+                self.navigationController?.pushViewController(self.vc, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 
     public override func configureViewController() { }

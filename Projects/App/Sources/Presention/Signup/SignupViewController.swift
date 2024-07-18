@@ -165,6 +165,12 @@ final class SignupViewController: BaseViewController<SignupViewModel> {
                 self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
+
+        signupButton.rx.tap
+            .subscribe(onNext: {
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 
     public override func configureNavigation() {
